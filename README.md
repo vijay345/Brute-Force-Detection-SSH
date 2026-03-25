@@ -36,6 +36,10 @@ sudo journalctl -u ssh | grep "Failed"
 ---
 sudo fail2ban-client set sshd banip 10.0.2.15
 
+
+## 🧠 Analysis Summary
+The attack was identified as a brute force attempt based on repeated failed SSH login attempts from a single IP address within a short time frame. The attacker was identified and blocked using Fail2Ban, preventing further unauthorized access.
+
 ## 📸 Screenshots
 
 ---
