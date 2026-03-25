@@ -168,28 +168,29 @@ bantime  = 3600
 ### 🔴 Failed Login Attempts (Detection)
 > Multiple failed SSH login attempts visible in journalctl output — a clear brute force pattern.
 
-![Log entries (Brute Force)](screenshots/failed_logins.png)
+<img width="788" height="432" alt="Fake user(Brute Force)" src="https://github.com/user-attachments/assets/7299c29b-e24b-4920-94e0-0a624e68815f" />
 
 ---
 
 ### 🌐 Attacker IP Identification
 > Repeated failed logins all originate from a single IP, confirming the attack source.
 
-![IP address (Brute Force)](screenshots/attacker_ip.png)
+<img width="758" height="332" alt="Ipa address(brute force)" src="https://github.com/user-attachments/assets/107f09d9-d1dd-438b-bee9-fc50841c439a" />
 
 ---
 
 ### 🛡️ Fail2Ban Status (Active Mitigation)
 > Fail2Ban sshd jail is active and monitoring for threshold violations.
 
-![fail2ban status](screenshots/fail2ban_status.png)
+<img width="589" height="245" alt="fail2ban status" src="https://github.com/user-attachments/assets/e82f6c8c-4a0d-412a-ab7c-e0b5cae6927d" />
 
 ---
 
 ### 🚫 Blocked IP (Verification)
 > The attacker IP has been successfully banned and confirmed via Fail2Ban client.
 
-![Banned Attacker](screenshots/banned_ip.png)
+<img width="637" height="236" alt="Banned Attacker(Brute Force)" src="https://github.com/user-attachments/assets/c4ac52a3-4d16-46b4-a93b-f07cca73f753" />
+
 
 ---
 
