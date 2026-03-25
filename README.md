@@ -24,7 +24,6 @@ Ip Address
 ## Attack Simulation
 Multiple failed SSH login attempts were generated using invalid credentials:
 
-```bash
 ssh fakeuser@10.0.2.15
 
 <img width="788" height="432" alt="Fake user(Brute Force)" src="https://github.com/user-attachments/assets/0c1661e4-b1b1-4968-bdff-1991579fc8ae" />
