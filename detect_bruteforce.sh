@@ -59,15 +59,15 @@ get_failed_logins() {
 }
 
 extract_ips() {
-    # Extract IPs from failed login lines, count occurrences
+    # Extract IPs using regex — works for both journalctl and auth.log formats
     if [[ "$USE_JOURNALCTL" == true ]]; then
         journalctl -u ssh --since "10 minutes ago" \
             | grep "Failed password" \
-            | awk '{print $11}' \
+            | grep -oP 'from \K[\d\.]+' \
             | sort | uniq -c | sort -rn
     else
         grep "Failed password" "$LOG_FILE" \
-            | awk '{print $11}' \
+            | grep -oP 'from \K[\d\.]+' \
             | sort | uniq -c | sort -rn
     fi
 }
@@ -118,13 +118,15 @@ show_top_attackers() {
 
     if [[ "$USE_JOURNALCTL" == true ]]; then
         journalctl -u ssh | grep "Failed password" \
-            | awk '{print $11}' | sort | uniq -c | sort -rn | head -10 \
+            | grep -oP 'from \K[\d\.]+' \
+            | sort | uniq -c | sort -rn | head -10 \
             | while read -r count ip; do
                 printf "  %-8s ${RED}%-20s${NC}\n" "$count" "$ip"
             done
     else
         grep "Failed password" "$LOG_FILE" \
-            | awk '{print $11}' | sort | uniq -c | sort -rn | head -10 \
+            | grep -oP 'from \K[\d\.]+' \
+            | sort | uniq -c | sort -rn | head -10 \
             | while read -r count ip; do
                 printf "  %-8s ${RED}%-20s${NC}\n" "$count" "$ip"
             done
@@ -139,13 +141,15 @@ show_targeted_usernames() {
 
     if [[ "$USE_JOURNALCTL" == true ]]; then
         journalctl -u ssh | grep "Failed password" \
-            | awk '{print $9}' | sort | uniq -c | sort -rn | head -10 \
+            | grep -oP 'for (invalid user )?\K\S+' \
+            | sort | uniq -c | sort -rn | head -10 \
             | while read -r count user; do
                 printf "  %-8s ${YELLOW}%-20s${NC}\n" "$count" "$user"
             done
     else
         grep "Failed password" "$LOG_FILE" \
-            | awk '{print $9}' | sort | uniq -c | sort -rn | head -10 \
+            | grep -oP 'for (invalid user )?\K\S+' \
+            | sort | uniq -c | sort -rn | head -10 \
             | while read -r count user; do
                 printf "  %-8s ${YELLOW}%-20s${NC}\n" "$count" "$user"
             done
@@ -168,10 +172,15 @@ show_summary() {
     echo -e "${CYAN}  Detection Summary${NC}"
     echo -e "${CYAN}══════════════════════════════════════════════════${NC}"
 
-    TOTAL_FAILURES=$(grep -c "Failed password" "$LOG_FILE" 2>/dev/null || \
-                     journalctl -u ssh | grep -c "Failed password")
-    UNIQUE_IPS=$(grep "Failed password" "$LOG_FILE" 2>/dev/null | awk '{print $11}' | sort -u | wc -l || \
-                 journalctl -u ssh | grep "Failed password" | awk '{print $11}' | sort -u | wc -l)
+    if [[ "$USE_JOURNALCTL" == true ]]; then
+        TOTAL_FAILURES=$(journalctl -u ssh | grep -c "Failed password")
+        UNIQUE_IPS=$(journalctl -u ssh | grep "Failed password" \
+            | grep -oP 'from \K[\d\.]+' | sort -u | wc -l)
+    else
+        TOTAL_FAILURES=$(grep -c "Failed password" "$LOG_FILE" 2>/dev/null || echo 0)
+        UNIQUE_IPS=$(grep "Failed password" "$LOG_FILE" 2>/dev/null \
+            | grep -oP 'from \K[\d\.]+' | sort -u | wc -l)
+    fi
 
     echo -e "  Total failed login attempts : ${RED}$TOTAL_FAILURES${NC}"
     echo -e "  Unique attacker IPs         : ${RED}$UNIQUE_IPS${NC}"
