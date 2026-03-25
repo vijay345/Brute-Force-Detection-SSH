@@ -21,7 +21,7 @@ Ip Address
 <img width="758" height="332" alt="Ipa address(brute force)" src="https://github.com/user-attachments/assets/80e80f57-1966-4faa-ba57-d5b10140d12b" />
 
 
-## 🚨 Attack Simulation
+## Attack Simulation
 Multiple failed SSH login attempts were generated using invalid credentials:
 
 ```bash
