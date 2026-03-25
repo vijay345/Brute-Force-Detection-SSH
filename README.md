@@ -7,7 +7,10 @@ Brute Force Attack Simulation
 ## 📌 Overview
 This project demonstrates detection and mitigation of a brute force attack on an SSH service using system logs and Fail2Ban.
 
----
+## 🧠 Analysis Summary
+
+The attack was identified as a brute force attempt based on repeated failed SSH login attempts from a single IP address within a short time frame. The attacker was identified and blocked using Fail2Ban.
+
 
 ## 🛠 Tools & Technologies
 - Kali Linux
@@ -36,9 +39,6 @@ sudo journalctl -u ssh | grep "Failed"
 ---
 sudo fail2ban-client set sshd banip 10.0.2.15
 
-
-## 🧠 Analysis Summary
-The attack was identified as a brute force attempt based on repeated failed SSH login attempts from a single IP address within a short time frame. The attacker was identified and blocked using Fail2Ban, preventing further unauthorized access.
 
 ## 📸 Screenshots
 
