@@ -54,6 +54,7 @@ Verified via:
 
 sudo fail2ban-client status sshd
 sudo iptables -L -n
+
 <img width="637" height="236" alt="Banned Attacker(Brute Force)" src="https://github.com/user-attachments/assets/66f5a7e4-24c7-4d00-8123-1a6b45184cdf" />
 
 
